@@ -1,0 +1,13 @@
+# Backend Dependencies - Never commit these!
+backend/node_modules/
+
+# Backend Environment variables file - Contains secrets!
+backend/.env
+
+# Log files (if any generated in backend)
+backend/logs/
+backend/*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db

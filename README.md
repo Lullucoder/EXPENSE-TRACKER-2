@@ -1,7 +1,6 @@
 # Modern Student Expense Tracker
 
 ![Expense Tracker Screenshot](https://github.com/user-attachments/assets/f29c7033-c1f1-4682-8d8d-b47c87089447)
-)  
 
 A full-stack web application designed to help students track their expenses efficiently. Built with Node.js, Express, PostgreSQL (hosted on Supabase), and a responsive vanilla JavaScript frontend featuring Chart.js for visualization.
 
@@ -41,23 +40,23 @@ A full-stack web application designed to help students track their expenses effi
     *   Render
 
 ## Project Structure
-EXPENSE-TRACKER-2/
-├── .git/ # Git tracking folder (hidden)
+EXPENSE-TRACKER-2/                                                                                                                                          
+├── .git/ # Git tracking folder (hidden)                                                                                                                    
 ├── node_modules/ # Project dependencies (ignored by Git)
-├── src/ # Main source code folder
-│ ├── backend/ # Backend specific files
-│ │ ├── .env # Local environment variables (ignored by Git)
-│ │ └── server.js # Express server logic, API routes
-│ └── frontend/ # Frontend specific files
-│ ├── css/ # CSS styles
-│ │ └── style.css
-│ ├── js/ # JavaScript files
-│ │ └── script.js
-│ └── index.html # Main HTML page
-├── .gitignore # Specifies intentionally untracked files
-├── package-lock.json # Exact dependency versions
-├── package.json # Root project config, dependencies, scripts
-└── README.md # This file
+├── src/ # Main source code folder                                                                                                                          
+│ ├── backend/ # Backend specific files                                                                                                                     
+│ │ ├── .env # Local environment variables (ignored by Git)                                                                                                 
+│ │ └── server.js # Express server logic, API routes                                                                                                        
+│ └── frontend/ # Frontend specific files                                                                                                                   
+│ ├── css/ # CSS styles                                                                                                                                     
+│ │ └── style.css                                                                                                                                           
+│ ├── js/ # JavaScript files                                                                                                                                
+│ │ └── script.js                                                                                                                                           
+│ └── index.html # Main HTML page                                                                                                                           
+├── .gitignore # Specifies intentionally untracked files                                                                                                    
+├── package-lock.json # Exact dependency versions                                                                                                           
+├── package.json # Root project config, dependencies, scripts                                                                                               
+└── README.md # This file                                                                                                                                   
 
 ## Getting Started
 

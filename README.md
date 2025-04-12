@@ -1,4 +1,4 @@
-# Modern Student Expense Tracker
+# Students Expense Tracker
 
 ![Expense Tracker Screenshot](https://github.com/user-attachments/assets/f29c7033-c1f1-4682-8d8d-b47c87089447)
 

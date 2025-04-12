@@ -140,7 +140,7 @@ This application is deployed and running live on **Render**.
 
 ## License
 
-This project is currently unlicensed. Choose a license if desired (e.g., MIT).
+This project is currently unlicensed. It is open source freeware.
 
 ---
 

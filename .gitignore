@@ -1,6 +1,7 @@
 # Backend Dependencies - Never commit these!
 backend/node_modules/
 
+
 # Backend Environment variables file - Contains secrets!
 backend/.env
 

@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: expense-tracker
-    env: node
-    buildCommand: "npm install"
-    startCommand: "npm start"
-    rootDir: "."

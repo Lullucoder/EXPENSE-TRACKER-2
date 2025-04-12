@@ -3,59 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Expense Tracker</title>
-    <!-- Link to Font Awesome for Icons -->
+    <title>Enhanced Expense Tracker</title>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Correct path relative to src/frontend/index.html -->
+    <!-- Your CSS -->
     <link rel="stylesheet" href="css/style.css">
-    <!-- Include Chart.js library (defer is okay for libraries) -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
-
 </head>
 <body>
     <div class="container">
         <header>
             <h1><i class="fas fa-wallet"></i> Student Expense Tracker</h1>
+            <!-- User Info Area -->
+             <div id="user-info" style="display: none;"> <!-- Start hidden -->
+                <span id="welcome-message" style="margin-right: 15px; font-weight: bold;"></span>
+                <button id="logout-btn" class="btn btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
         </header>
 
-        <main class="main-content">
-            <!-- Left Column: Form and Summary -->
+        <!-- Authentication Section -->
+        <section id="auth-container" class="auth-section card"> <!-- Start without inline style --> <!-- Start shown -->
+             <!-- Login and Register Forms -->
+             <div id="login-section">
+                <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+                <form id="login-form">
+                    <div class="form-group"> <label for="login-username">Username:</label> <input type="text" id="login-username" required autocomplete="username"> </div>
+                    <div class="form-group"> <label for="login-password">Password:</label> <input type="password" id="login-password" required autocomplete="current-password"> </div>
+                    <button type="submit" class="btn btn-login"><i class="fas fa-sign-in-alt"></i> Login</button>
+                    <p id="login-error" class="error-message"></p>
+                </form>
+                <p class="auth-toggle">Don't have an account? <a href="#" id="show-register">Register here</a></p>
+            </div>
+            <div id="register-section" style="display: none;">
+                <h2><i class="fas fa-user-plus"></i> Register</h2>
+                <form id="register-form">
+                    <div class="form-group"> <label for="register-username">Username:</label> <input type="text" id="register-username" required autocomplete="username"> </div>
+                    <div class="form-group"> <label for="register-password">Password:</label> <input type="password" id="register-password" required autocomplete="new-password"> <small>Minimum 6 characters</small> </div>
+                    <div class="form-group"> <label for="register-confirm-password">Confirm Password:</label> <input type="password" id="register-confirm-password" required autocomplete="new-password"> </div>
+                    <button type="submit" class="btn btn-register"><i class="fas fa-user-plus"></i> Register</button>
+                    <p id="register-error" class="error-message"></p> <p id="register-success" class="success-message"></p>
+                </form>
+                <p class="auth-toggle">Already have an account? <a href="#" id="show-login">Login here</a></p>
+            </div>
+        </section>
+
+        <!-- Main App Content (Initially Hidden) -->
+        <main id="app-container" class="main-content hidden"> <!-- Start hidden using class -->
+            <!-- Left Column -->
             <section class="left-column">
                 <!-- Add Expense Form -->
-                <div class="form-container card">
+                 <div class="form-container card">
                     <h2><i class="fas fa-plus-circle"></i> Add New Expense</h2>
                     <form id="expense-form">
-                        <div class="form-group">
-                            <label for="description">Description:</label>
-                            <input type="text" id="description" placeholder="e.g., Coffee, Bus ticket" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="amount">Amount (₹):</label> <!-- Rupee symbol -->
-                            <input type="number" id="amount" step="0.01" min="0.01" placeholder="e.g., 150.50" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Category:</label>
-                            <select id="category" required>
-                                <option value="">-- Select Category --</option>
-                                <option value="Food & Groceries">Food & Groceries</option>
-                                <option value="Transport">Transport</option>
-                                <option value="Accommodation/Rent">Accommodation/Rent</option>
-                                <option value="Utilities">Utilities (Phone, Internet)</option>
-                                <option value="Books & Supplies">Books & Supplies</option>
-                                <option value="Tuition & Fees">Tuition & Fees</option>
-                                <option value="Entertainment">Entertainment</option>
-                                <option value="Clothing">Clothing</option>
-                                <option value="Personal Care">Personal Care</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                         <div class="form-group">
-                            <label for="date">Date:</label>
-                            <input type="date" id="date" required>
-                        </div>
-                        <button type="submit" class="btn btn-add">
-                            <i class="fas fa-plus"></i> Add Expense
-                        </button>
+                        <!-- Form Groups -->
+                        <div class="form-group"> <label for="description">Description:</label> <input type="text" id="description" placeholder="e.g., Coffee, Bus ticket" required> </div>
+                        <div class="form-group"> <label for="amount">Amount (₹):</label> <input type="number" id="amount" step="0.01" min="0.01" placeholder="e.g., 150.50" required> </div>
+                        <div class="form-group"> <label for="category">Category:</label> <select id="category" required> <option value="">-- Select Category --</option> <option value="Food & Groceries">Food & Groceries</option> <option value="Transport">Transport</option> <option value="Accommodation/Rent">Accommodation/Rent</option> <option value="Utilities">Utilities</option> <option value="Books & Supplies">Books & Supplies</option> <option value="Tuition & Fees">Tuition & Fees</option> <option value="Entertainment">Entertainment</option> <option value="Clothing">Clothing</option> <option value="Personal Care">Personal Care</option> <option value="Other">Other</option> </select> </div>
+                        <div class="form-group"> <label for="date">Date:</label> <input type="date" id="date" required> </div>
+                        <button type="submit" class="btn btn-add"> <i class="fas fa-plus"></i> Add Expense </button>
                     </form>
                     <p id="form-error" class="error-message"></p>
                     <p id="form-success" class="success-message"></p>
@@ -64,85 +72,69 @@
                 <!-- Expense Summary -->
                 <div class="summary-container card">
                      <h2><i class="fas fa-calculator"></i> Summary</h2>
-                     <p>Total Expenses: <strong id="total-expenses">₹0.00</strong></p>
+                     <!-- Display area for filtered total -->
+                     <p>Filtered Total: <strong id="filtered-total-expenses">₹0.00</strong></p>
+                     <!-- Display area for overall total -->
+                     <p style="font-size: 0.9em; color: var(--text-muted);">Overall Total: <span id="overall-total-expenses">₹0.00</span></p>
                      <div class="chart-container">
                         <canvas id="categoryChart"></canvas>
                     </div>
                 </div>
             </section>
 
-            <!-- Right Column: Expense List and Filters -->
+            <!-- Right Column -->
             <section class="right-column">
                 <div class="list-container card">
                     <h2><i class="fas fa-history"></i> Expense History</h2>
+                    <!-- Actions Bar -->
+                     <div class="list-actions-bar">
+                        <div class="date-filters">
+                            <span>Filter by Date:</span>
+                            <button class="btn btn-date-filter" data-range="all">All Time</button>
+                            <button class="btn btn-date-filter" data-range="7">Last 7 Days</button>
+                            <button class="btn btn-date-filter" data-range="30">Last 30 Days</button>
+                            <button class="btn btn-date-filter" data-range="month">This Month</button>
+                            <div class="custom-date-range"> <input type="date" id="date-filter-start" title="Custom start date"> <span>to</span> <input type="date" id="date-filter-end" title="Custom end date"> </div>
+                        </div>
+                        <div class="export-share-actions">
+                             <!-- Share button starts disabled -->
+                            <button id="share-selected-btn" class="btn btn-secondary" title="Share selected expenses" disabled><i class="fas fa-share-alt"></i> Share Selected</button>
+                            <button id="export-csv-btn" class="btn btn-secondary" title="Export current view as CSV"><i class="fas fa-file-csv"></i> Export CSV</button>
+                        </div>
+                    </div>
+                    <!-- Filters & Sort -->
                     <div class="filters">
-                        <div class="form-group filter-group">
-                             <label for="filter-search"><i class="fas fa-search"></i></label>
-                             <input type="search" id="filter-search" placeholder="Search by description...">
-                        </div>
-                        <div class="form-group filter-group">
-                            <label for="filter-category"><i class="fas fa-filter"></i></label>
-                            <select id="filter-category">
-                                <option value="All">All Categories</option>
-                            </select>
-                        </div>
+                        <div class="form-group filter-group"> <label for="filter-search"><i class="fas fa-search"></i></label> <input type="search" id="filter-search" placeholder="Search by description..."> </div>
+                        <div class="form-group filter-group"> <label for="filter-category"><i class="fas fa-filter"></i></label> <select id="filter-category"> <option value="All">All Categories</option> </select> </div>
+                        <div class="form-group filter-group sort-group"> <label for="sort-expenses"><i class="fas fa-sort-amount-down"></i></label> <select id="sort-expenses"> <option value="date_desc">Date (Newest First)</option> <option value="date_asc">Date (Oldest First)</option> <option value="amount_desc">Amount (Highest First)</option> <option value="amount_asc">Amount (Lowest First)</option> <option value="description_asc">Description (A-Z)</option> <option value="category_asc">Category (A-Z)</option> </select> </div>
                     </div>
-                    <div id="loading-indicator" class="loading" style="display: none;">
-                        <i class="fas fa-spinner fa-spin"></i> Loading expenses...
-                    </div>
-                    <ul id="expense-list">
-                        <li class="no-expenses" style="display: none;">No expenses recorded yet.</li>
-                    </ul>
+                    <!-- Loading & List -->
+                     <div id="loading-indicator" class="loading" style="display: none;"> <i class="fas fa-spinner fa-spin"></i> Loading expenses... </div>
+                     <ul id="expense-list"> <li class="no-expenses" style="display: none;">No expenses recorded yet.</li> </ul>
                      <p id="list-error" class="error-message"></p>
                 </div>
             </section>
         </main>
-    </div>
 
-    <!-- Edit Expense Modal -->
-    <div id="edit-modal" class="modal" style="display: none;">
-        <div class="modal-content card">
-            <span class="close-modal-btn" onclick="closeEditModal()">×</span>
-            <h2><i class="fas fa-edit"></i> Edit Expense</h2>
-            <form id="edit-expense-form">
-                <input type="hidden" id="edit-expense-id">
-                <div class="form-group">
-                    <label for="edit-description">Description:</label>
-                    <input type="text" id="edit-description" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit-amount">Amount (₹):</label> <!-- Rupee symbol -->
-                    <input type="number" id="edit-amount" step="0.01" min="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit-category">Category:</label>
-                    <select id="edit-category" required>
-                         <option value="">-- Select Category --</option>
-                         <option value="Food & Groceries">Food & Groceries</option>
-                         <option value="Transport">Transport</option>
-                         <option value="Accommodation/Rent">Accommodation/Rent</option>
-                         <option value="Utilities">Utilities (Phone, Internet)</option>
-                         <option value="Books & Supplies">Books & Supplies</option>
-                         <option value="Tuition & Fees">Tuition & Fees</option>
-                         <option value="Entertainment">Entertainment</option>
-                         <option value="Clothing">Clothing</option>
-                         <option value="Personal Care">Personal Care</option>
-                         <option value="Other">Other</option>
-                    </select>
-                </div>
-                 <div class="form-group">
-                    <label for="edit-date">Date:</label>
-                    <input type="date" id="edit-date" required>
-                </div>
-                <button type="submit" class="btn btn-update">
-                    <i class="fas fa-save"></i> Update Expense
-                </button>
-            </form>
-             <p id="edit-form-error" class="error-message"></p>
+        <!-- Edit Expense Modal -->
+        <div id="edit-modal" class="modal" style="display: none;">
+             <!-- Modal content -->
+             <div class="modal-content card">
+                 <span class="close-modal-btn" onclick="closeEditModal()">×</span>
+                 <h2><i class="fas fa-edit"></i> Edit Expense</h2>
+                 <form id="edit-expense-form"> <!-- Unique ID -->
+                     <input type="hidden" id="edit-expense-id">
+                     <div class="form-group"> <label for="edit-description">Description:</label> <input type="text" id="edit-description" required> <!-- Unique ID --> </div>
+                     <div class="form-group"> <label for="edit-amount">Amount (₹):</label> <input type="number" id="edit-amount" step="0.01" min="0.01" required> <!-- Unique ID --> </div>
+                     <div class="form-group"> <label for="edit-category">Category:</label> <select id="edit-category" required> <!-- Unique ID --> <option value="">-- Select Category --</option> <option value="Food & Groceries">Food & Groceries</option> <option value="Transport">Transport</option> <option value="Accommodation/Rent">Accommodation/Rent</option> <option value="Utilities">Utilities</option> <option value="Books & Supplies">Books & Supplies</option> <option value="Tuition & Fees">Tuition & Fees</option> <option value="Entertainment">Entertainment</option> <option value="Clothing">Clothing</option> <option value="Personal Care">Personal Care</option> <option value="Other">Other</option> </select> </div>
+                     <div class="form-group"> <label for="edit-date">Date:</label> <input type="date" id="edit-date" required> <!-- Unique ID --> </div>
+                     <button type="submit" class="btn btn-update"> <i class="fas fa-save"></i> Update Expense </button>
+                 </form>
+                  <p id="edit-form-error" class="error-message"></p> <!-- Unique ID -->
+             </div>
         </div>
-    </div>
+    </div> <!-- End .container -->
 
-    <!-- Correct path relative to src/frontend/index.html - NO DEFER -->
-    <script src="js/script.js"></script>
+    <script src="js/script.js"></script> <!-- NO DEFER -->
 </body>
 </html>

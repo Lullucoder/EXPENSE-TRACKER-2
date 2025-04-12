@@ -4,7 +4,7 @@
 
 A full-stack web application designed to help students track their expenses efficiently. Built with Node.js, Express, PostgreSQL (hosted on Supabase), and a responsive vanilla JavaScript frontend featuring Chart.js for visualization.
 
-**Live Demo:** [Link to your deployed Render App]([https://expense-tracker-2-k92j.onrender.com]) <!-- <<< REPLACE THIS URL -->
+**Live Demo:** https://expense-tracker-2-k92j.onrender.com <!-- <<< REPLACE THIS URL -->
 
 ## Features
 

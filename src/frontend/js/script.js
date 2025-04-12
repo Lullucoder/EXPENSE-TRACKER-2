@@ -88,7 +88,51 @@ document.addEventListener('DOMContentLoaded', () => {
     function setLoggedInUser(username) { if (username) { localStorage.setItem('expenseTrackerUsername', username); /* currentUsername = username; */ } else { localStorage.removeItem('expenseTrackerUsername'); /* currentUsername = null; */ } updateWelcomeMessage(); } // Removed assignment to unused variable
     function getLoggedInUser() { return localStorage.getItem('expenseTrackerUsername'); }
     function updateWelcomeMessage() { if (welcomeMessageSpan && userInfoDiv) { const username = getLoggedInUser(); if (username) { welcomeMessageSpan.textContent = `Welcome, ${escapeHtml(username)}!`; userInfoDiv.style.display = 'flex'; } else { welcomeMessageSpan.textContent = ''; userInfoDiv.style.display = 'none'; } } }
-    async function handleRegisterSubmit(event) { event.preventDefault(); registerErrorDisplay.textContent = ''; registerSuccessDisplay.style.display = 'none'; const username = document.getElementById('register-username').value.trim(); const password = document.getElementById('register-password').value; const confirmPassword = document.getElementById('register-confirm-password').value; if (!username || !password || !confirmPassword) { showFeedback(registerErrorDisplay, 'Please fill in all fields.', false); return; } if (password.length < 6) { showFeedback(registerErrorDisplay, 'Password must be >= 6 characters.', false); return; } if (password !== confirmPassword) { showFeedback(registerErrorDisplay, 'Passwords do not match.', false); return; } try { const response = await apiRequest(`${AUTH_API_URL}/register`, { method: 'POST', body: JSON.stringify({ username, password }), }); if(response) { showFeedback(registerSuccessDisplay, 'Registration successful! Please login.', true); registerForm.reset(); showLoginView(); } } catch (error) { showFeedback(registerErrorDisplay, error.message || 'Registration failed.', false); } }
+    async function handleRegisterSubmit(event) {
+        event.preventDefault();
+        // Ensure error/success elements exist and clear previous messages
+        if(registerErrorDisplay) registerErrorDisplay.textContent = '';
+        if(registerSuccessDisplay) registerSuccessDisplay.style.display = 'none';
+
+        const usernameInput = document.getElementById('register-username');
+        const passwordInput = document.getElementById('register-password');
+        const confirmPasswordInput = document.getElementById('register-confirm-password');
+
+        // Check if elements exist before getting value
+        const username = usernameInput?.value.trim();
+        const password = passwordInput?.value;
+        const confirmPassword = confirmPasswordInput?.value;
+
+
+        if (!username || !password || !confirmPassword) {
+            showFeedback(registerErrorDisplay, 'Please fill in all registration fields.', false); return;
+        }
+        if (password.length < 6) {
+             showFeedback(registerErrorDisplay, 'Password must be at least 6 characters.', false); return;
+        }
+        // *** THIS IS THE CHECK ***
+        if (password !== confirmPassword) {
+            // Ensure it targets registerErrorDisplay
+            showFeedback(registerErrorDisplay, 'Passwords do not match.', false);
+            return; // Stop execution if passwords don't match
+        }
+        // *** END OF CHECK ***
+
+        try {
+            const response = await apiRequest(`${AUTH_API_URL}/register`, {
+                method: 'POST',
+                body: JSON.stringify({ username, password }),
+            });
+            if(response) {
+                showFeedback(registerSuccessDisplay, 'Registration successful! Please login.', true);
+                if(registerForm) registerForm.reset(); // Check form exists before reset
+                showLoginView();
+            }
+        } catch (error) {
+            // Ensure catch block targets the correct display
+            showFeedback(registerErrorDisplay, error.message || 'Registration failed.', false);
+        }
+     }
     async function handleLoginSubmit(event) { event.preventDefault(); loginErrorDisplay.textContent = ''; const username = document.getElementById('login-username').value.trim(); const password = document.getElementById('login-password').value; if (!username || !password) { showFeedback(loginErrorDisplay, 'Please enter username and password.', false); return; } try { const response = await apiRequest(`${AUTH_API_URL}/login`, { method: 'POST', body: JSON.stringify({ username, password }), }); if (response && response.token) { setToken(response.token); setLoggedInUser(response.user?.username || username); updateUIForLoginState(); loadPreferences(); fetchExpenses(); } else if (response && !response.token){ showFeedback(loginErrorDisplay, 'Login failed: Invalid response.', false); } } catch (error) { showFeedback(loginErrorDisplay, error.message || 'Login failed.', false); } }
     function handleLogout() { setToken(null); setLoggedInUser(null); allExpenses = []; updateUIForLoginState(); renderExpenseList([]); updateChart([]); if(filteredTotalDisplay) filteredTotalDisplay.textContent = `${CURRENCY_SYMBOL}0.00`; if(overallTotalDisplay) overallTotalDisplay.textContent = `${CURRENCY_SYMBOL}0.00`; if(filterCategorySelect) filterCategorySelect.value = 'All'; if(filterSearchInput) filterSearchInput.value = ''; if(sortSelect) sortSelect.value = 'date_desc'; clearDateFilters(); selectedExpenseIds.clear(); updateActionButtonsState(); console.log('User logged out.'); }
 
@@ -196,25 +240,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Initial Load ---
-    function initializeApp() {
-        console.log("Initializing app...");
-        const dateInputElement = document.getElementById('date');
-        if(dateInputElement) { dateInputElement.valueAsDate = new Date(); }
-
-        initializeChart();
-        loadPreferences(); // Load saved filters/sort FIRST
-        updateUIForLoginState(); // Update UI based on token presence
-
-        const token = getToken();
-        if (token) {
-            console.log("Token found, fetching initial expenses.");
-            fetchExpenses(); // Fetch data, THEN applies prefs and renders
-        } else {
-            console.log("No token found, showing auth screen.");
-            updateChart([]); // Show empty chart
+        // --- Initial Load ---
+        function initializeApp() {
+            console.log("Initializing app...");
+    
+            // --- Set Default Date for Add Expense Form ---
+            const dateInputElement = document.getElementById('date');
+            if (dateInputElement) {
+                const today = new Date();
+                // Format date as YYYY-MM-DD for input value
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed, add padStart
+                const day = String(today.getDate()).padStart(2, '0');
+                const formattedDate = `${year}-${month}-${day}`;
+                dateInputElement.value = formattedDate; // Set the value attribute
+                console.log("Default date set to:", formattedDate);
+            } else {
+                 console.warn("Date input element ('date') not found.");
+            }
+            // --- End Date Setting ---
+    
+            initializeChart();
+            loadPreferences(); // Load saved filters/sort FIRST
+            updateUIForLoginState(); // Update UI based on token presence
+    
+            const token = getToken();
+            if (token) {
+                console.log("Token found, fetching initial expenses.");
+                fetchExpenses(); // Fetch data, then applies prefs and renders
+            } else {
+                console.log("No token found, showing auth screen.");
+                updateChart([]); // Show empty chart
+            }
         }
-    }
-
-    initializeApp(); // Start the application
+    
+        initializeApp(); // Start the application // Start the application
 
 });

@@ -1,12 +1,11 @@
-
 {
-  "name": "student-expense-tracker", 
+  "name": "student-expense-tracker",
   "version": "1.0.0",
-  "description": "Full-stack expense tracker using Node.js, Express, PostgreSQL, and HTML/CSS/JS", 
-  "main": "src/backend/server.js", 
+  "description": "Full-stack expense tracker using Node.js, Express, PostgreSQL, and HTML/CSS/JS",
+  "main": "src/backend/server.js",
   "scripts": {
-    "start": "node src/backend/server.js", 
-    "dev": "node --watch src/backend/server.js", 
+    "start": "node src/backend/server.js",
+    "dev": "node --watch src/backend/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -23,8 +22,10 @@
   "author": "Your Name",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.3.1", 
-    "express": "^4.18.2", 
-    "pg": "^8.11.3"      
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.3"
   }
 }

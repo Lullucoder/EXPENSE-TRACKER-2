@@ -1,6 +1,6 @@
 # Modern Student Expense Tracker
 
-![Expense Tracker Screenshot](![screencapture-expense-tracker-2-k92j-onrender-2025-04-12-23_42_17](https://github.com/user-attachments/assets/f29c7033-c1f1-4682-8d8d-b47c87089447)
+![Expense Tracker Screenshot](https://github.com/user-attachments/assets/f29c7033-c1f1-4682-8d8d-b47c87089447)
 )  
 
 A full-stack web application designed to help students track their expenses efficiently. Built with Node.js, Express, PostgreSQL (hosted on Supabase), and a responsive vanilla JavaScript frontend featuring Chart.js for visualization.

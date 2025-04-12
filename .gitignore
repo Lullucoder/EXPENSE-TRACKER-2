@@ -1,0 +1,27 @@
+# Dependencies (Root Level)
+/node_modules/
+
+# Environment files (Correct Path)
+src/backend/.env
+
+# Log files (If any generated in backend)
+src/backend/logs/
+src/backend/*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE specific folders (Optional)
+.vscode/
+
+# Build artifacts (If any in future)
+dist/
+build/
+
+# Vercel specific (Cleaned up)
+.vercel/
+vercel.json
+
+# Render specific (Optional - secrets should be in dashboard)
+# render.yaml

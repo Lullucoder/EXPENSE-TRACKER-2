@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Expense Tracker</title>
+    <!-- Link to Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Correct path relative to src/frontend/index.html -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Include Chart.js library (defer is okay for libraries) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
+
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-wallet"></i> Student Expense Tracker</h1>
+        </header>
+
+        <main class="main-content">
+            <!-- Left Column: Form and Summary -->
+            <section class="left-column">
+                <!-- Add Expense Form -->
+                <div class="form-container card">
+                    <h2><i class="fas fa-plus-circle"></i> Add New Expense</h2>
+                    <form id="expense-form">
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <input type="text" id="description" placeholder="e.g., Coffee, Bus ticket" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">Amount (₹):</label> <!-- Rupee symbol -->
+                            <input type="number" id="amount" step="0.01" min="0.01" placeholder="e.g., 150.50" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category:</label>
+                            <select id="category" required>
+                                <option value="">-- Select Category --</option>
+                                <option value="Food & Groceries">Food & Groceries</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Accommodation/Rent">Accommodation/Rent</option>
+                                <option value="Utilities">Utilities (Phone, Internet)</option>
+                                <option value="Books & Supplies">Books & Supplies</option>
+                                <option value="Tuition & Fees">Tuition & Fees</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Clothing">Clothing</option>
+                                <option value="Personal Care">Personal Care</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                         <div class="form-group">
+                            <label for="date">Date:</label>
+                            <input type="date" id="date" required>
+                        </div>
+                        <button type="submit" class="btn btn-add">
+                            <i class="fas fa-plus"></i> Add Expense
+                        </button>
+                    </form>
+                    <p id="form-error" class="error-message"></p>
+                    <p id="form-success" class="success-message"></p>
+                </div>
+
+                <!-- Expense Summary -->
+                <div class="summary-container card">
+                     <h2><i class="fas fa-calculator"></i> Summary</h2>
+                     <p>Total Expenses: <strong id="total-expenses">₹0.00</strong></p>
+                     <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Column: Expense List and Filters -->
+            <section class="right-column">
+                <div class="list-container card">
+                    <h2><i class="fas fa-history"></i> Expense History</h2>
+                    <div class="filters">
+                        <div class="form-group filter-group">
+                             <label for="filter-search"><i class="fas fa-search"></i></label>
+                             <input type="search" id="filter-search" placeholder="Search by description...">
+                        </div>
+                        <div class="form-group filter-group">
+                            <label for="filter-category"><i class="fas fa-filter"></i></label>
+                            <select id="filter-category">
+                                <option value="All">All Categories</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="loading-indicator" class="loading" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Loading expenses...
+                    </div>
+                    <ul id="expense-list">
+                        <li class="no-expenses" style="display: none;">No expenses recorded yet.</li>
+                    </ul>
+                     <p id="list-error" class="error-message"></p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Edit Expense Modal -->
+    <div id="edit-modal" class="modal" style="display: none;">
+        <div class="modal-content card">
+            <span class="close-modal-btn" onclick="closeEditModal()">×</span>
+            <h2><i class="fas fa-edit"></i> Edit Expense</h2>
+            <form id="edit-expense-form">
+                <input type="hidden" id="edit-expense-id">
+                <div class="form-group">
+                    <label for="edit-description">Description:</label>
+                    <input type="text" id="edit-description" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-amount">Amount (₹):</label> <!-- Rupee symbol -->
+                    <input type="number" id="edit-amount" step="0.01" min="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-category">Category:</label>
+                    <select id="edit-category" required>
+                         <option value="">-- Select Category --</option>
+                         <option value="Food & Groceries">Food & Groceries</option>
+                         <option value="Transport">Transport</option>
+                         <option value="Accommodation/Rent">Accommodation/Rent</option>
+                         <option value="Utilities">Utilities (Phone, Internet)</option>
+                         <option value="Books & Supplies">Books & Supplies</option>
+                         <option value="Tuition & Fees">Tuition & Fees</option>
+                         <option value="Entertainment">Entertainment</option>
+                         <option value="Clothing">Clothing</option>
+                         <option value="Personal Care">Personal Care</option>
+                         <option value="Other">Other</option>
+                    </select>
+                </div>
+                 <div class="form-group">
+                    <label for="edit-date">Date:</label>
+                    <input type="date" id="edit-date" required>
+                </div>
+                <button type="submit" class="btn btn-update">
+                    <i class="fas fa-save"></i> Update Expense
+                </button>
+            </form>
+             <p id="edit-form-error" class="error-message"></p>
+        </div>
+    </div>
+
+    <!-- Correct path relative to src/frontend/index.html - NO DEFER -->
+    <script src="js/script.js"></script>
+</body>
+</html>

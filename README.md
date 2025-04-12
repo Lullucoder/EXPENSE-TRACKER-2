@@ -1,3 +1,63 @@
+# Modern Student Expense Tracker
+
+![Expense Tracker Screenshot](![screencapture-expense-tracker-2-k92j-onrender-2025-04-12-23_42_17](https://github.com/user-attachments/assets/f29c7033-c1f1-4682-8d8d-b47c87089447)
+)  
+
+A full-stack web application designed to help students track their expenses efficiently. Built with Node.js, Express, PostgreSQL (hosted on Supabase), and a responsive vanilla JavaScript frontend featuring Chart.js for visualization.
+
+**Live Demo:** [Link to your deployed Render App]([https://expense-tracker-2-k92j.onrender.com]) <!-- <<< REPLACE THIS URL -->
+
+## Features
+
+*   **Add Expenses:** Easily record new expenses with description, amount, category, and date.
+*   **View History:** See a chronological list of all recorded expenses.
+*   **Edit Expenses:** Modify details of existing expenses via a modal form.
+*   **Delete Expenses:** Remove expenses with a confirmation step.
+*   **Filtering:** Filter the expense history by category.
+*   **Searching:** Search expenses by description text.
+*   **Summary:** View the total amount of expenses displayed/filtered.
+*   **Category Chart:** Visualize the proportion of spending across different categories using a doughnut chart (updates with filters).
+*   **Data Persistence:** All expense data is securely stored in a PostgreSQL database (Supabase).
+*   **Responsive UI:** Adapts to different screen sizes (desktop, tablet, mobile).
+*   **User Feedback:** Provides visual feedback for loading states, successful actions, and errors.
+
+## Tech Stack
+
+*   **Backend:**
+    *   Node.js
+    *   Express.js
+    *   PostgreSQL (via Supabase)
+    *   `pg` (node-postgres client)
+    *   `dotenv` (for local environment variables)
+*   **Frontend:**
+    *   HTML5
+    *   CSS3 (including CSS Variables, Flexbox, Grid, Media Queries)
+    *   Vanilla JavaScript (ES6+)
+    *   Chart.js (for data visualization)
+    *   Font Awesome (for icons)
+*   **Database:**
+    *   Supabase (Cloud-hosted PostgreSQL)
+*   **Deployment:**
+    *   Render
+
+## Project Structure
+EXPENSE-TRACKER-2/
+├── .git/ # Git tracking folder (hidden)
+├── node_modules/ # Project dependencies (ignored by Git)
+├── src/ # Main source code folder
+│ ├── backend/ # Backend specific files
+│ │ ├── .env # Local environment variables (ignored by Git)
+│ │ └── server.js # Express server logic, API routes
+│ └── frontend/ # Frontend specific files
+│ ├── css/ # CSS styles
+│ │ └── style.css
+│ ├── js/ # JavaScript files
+│ │ └── script.js
+│ └── index.html # Main HTML page
+├── .gitignore # Specifies intentionally untracked files
+├── package-lock.json # Exact dependency versions
+├── package.json # Root project config, dependencies, scripts
+└── README.md # This file
 
 ## Getting Started
 
@@ -71,7 +131,7 @@ The backend provides the following API endpoints under the `/api` prefix:
 
 This application is deployed and running live on **Render**.
 
-*   **Live URL:** [Your Live Render URL] <!-- <<< REPLACE THIS URL -->
+*   **Live URL:** [https://expense-tracker-2-k92j.onrender.com] <!-- <<< REPLACE THIS URL -->
 *   **Render Configuration (via Dashboard):**
     *   **Root Directory:** (Blank - uses repository root)
     *   **Build Command:** `npm install`
@@ -84,4 +144,4 @@ This project is currently unlicensed. Choose a license if desired (e.g., MIT).
 
 ---
 
-*Developed by [Your Name]* <!-- Optional: Add your name/link -->
+*Developed by [Prashant Singh]* <!-- Optional: Add your name/link -->

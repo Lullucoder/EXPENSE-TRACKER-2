@@ -25,3 +25,4 @@ vercel.json
 
 # Render specific (Optional - secrets should be in dashboard)
 # render.yaml
+.vercel

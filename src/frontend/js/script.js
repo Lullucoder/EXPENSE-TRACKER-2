@@ -43,7 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const dateFilterEndInput = document.getElementById('date-filter-end');
     const exportCsvButton = document.getElementById('export-csv-btn');
     const shareSelectedButton = document.getElementById('share-selected-btn');
-
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
 
     // --- App State ---
     const AUTH_API_URL = '/api/auth';
@@ -145,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Rendering & Filtering/Sorting ---
-    function sortExpenses(expenses, sortOrder) { return [...expenses].sort((a, b) => { const valA = parseFloat(a.amount); const valB = parseFloat(b.amount); const descA = a.description?.toLowerCase() || ''; const descB = b.description?.toLowerCase() || ''; const catA = a.category?.toLowerCase() || ''; const catB = b.category?.toLowerCase() || ''; switch (sortOrder) { case 'date_asc': return new Date(a.date) - new Date(b.date); case 'amount_desc': return valB - valA; case 'amount_asc': return valA - valB; case 'description_asc': return descA.localeCompare(descB); case 'category_asc': return catA.localeCompare(catB); case 'date_desc': default: return new Date(b.date) - new Date(a.date); } }); }
+    function sortExpenses(expenses, sortOrder) { return [...expenses].sort((a, b) => { const valA = parseFloat(a.amount); const valB = parseFloat(b.amount); const descA = a.description?.toLowerCase() || ''; const descB = a.description?.toLowerCase() || ''; const catA = a.category?.toLowerCase() || ''; const catB = b.category?.toLowerCase() || ''; switch (sortOrder) { case 'date_asc': return new Date(a.date) - new Date(b.date); case 'amount_desc': return valB - valA; case 'amount_asc': return valA - valB; case 'description_asc': return descA.localeCompare(descB); case 'category_asc': return catA.localeCompare(catB); case 'date_desc': default: return new Date(b.date) - new Date(a.date); } }); }
 
     function renderFilteredAndSortedExpenses() {
         const categoryFilter = currentFilters.category; const searchTerm = currentFilters.searchTerm; const { start: startDate, end: endDate } = currentFilters.dateRange;
@@ -240,40 +242,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Initial Load ---
-        // --- Initial Load ---
-        function initializeApp() {
-            console.log("Initializing app...");
-    
-            // --- Set Default Date for Add Expense Form ---
-            const dateInputElement = document.getElementById('date');
-            if (dateInputElement) {
-                const today = new Date();
-                // Format date as YYYY-MM-DD for input value
-                const year = today.getFullYear();
-                const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed, add padStart
-                const day = String(today.getDate()).padStart(2, '0');
-                const formattedDate = `${year}-${month}-${day}`;
-                dateInputElement.value = formattedDate; // Set the value attribute
-                console.log("Default date set to:", formattedDate);
+    function initializeApp() {
+        console.log("Initializing app...");
+
+        // --- Set Default Date for Add Expense Form ---
+        const dateInputElement = document.getElementById('date');
+        if (dateInputElement) {
+            const today = new Date();
+            // Format date as YYYY-MM-DD for input value
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed, add padStart
+            const day = String(today.getDate()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}`;
+            dateInputElement.value = formattedDate; // Set the value attribute
+            console.log("Default date set to:", formattedDate);
+        } else {
+            console.warn("Date input element ('date') not found.");
+        }
+        // --- End Date Setting ---
+
+        initializeChart();
+        loadPreferences(); // Load saved filters/sort FIRST
+        updateUIForLoginState(); // Update UI based on token presence
+
+        const token = getToken();
+        if (token) {
+            console.log("Token found, fetching initial expenses.");
+            fetchExpenses(); // Fetch data, then applies prefs and renders
+        } else {
+            console.log("No token found, showing auth screen.");
+            updateChart([]); // Show empty chart
+        }
+
+        // Dark Mode Toggle
+        const saved = localStorage.getItem('theme');
+        if (saved === 'dark') document.body.classList.add('dark-mode');
+        updateIcon();
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateIcon();
+        });
+
+        function updateIcon() {
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
             } else {
-                 console.warn("Date input element ('date') not found.");
-            }
-            // --- End Date Setting ---
-    
-            initializeChart();
-            loadPreferences(); // Load saved filters/sort FIRST
-            updateUIForLoginState(); // Update UI based on token presence
-    
-            const token = getToken();
-            if (token) {
-                console.log("Token found, fetching initial expenses.");
-                fetchExpenses(); // Fetch data, then applies prefs and renders
-            } else {
-                console.log("No token found, showing auth screen.");
-                updateChart([]); // Show empty chart
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
             }
         }
-    
-        initializeApp(); // Start the application // Start the application
+    }
 
+    initializeApp(); // Start the application
 });

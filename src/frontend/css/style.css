@@ -47,6 +47,53 @@ body {
     min-height: 100vh;
 }
 
+/* Dark Mode Overrides */
+body.dark-mode {
+  --background-color: #121212;
+  --card-background: #1e1e1e;
+  --text-color: #e0e0e0;
+  --text-muted: #b3b3b3;
+  --border-color: #333;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+}
+/* Ensure text and controls invert nicely */
+body.dark-mode .container,
+body.dark-mode .card {
+  background-color: var(--card-background);
+  color: var(--text-color);
+}
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode button {
+  background-color: #2a2a2a;
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+/* Dark‑mode: expense list styling */
+body.dark-mode #expense-list li {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+body.dark-mode #expense-list li .details span,
+body.dark-mode #expense-list li .amount {
+  color: var(--text-color);
+}
+
+body.dark-mode #expense-list li .btn-edit,
+body.dark-mode #expense-list li .btn-delete {
+  color: var(--text-muted);
+}
+
+body.dark-mode #expense-list li .btn-edit:hover {
+  color: #d18510;
+}
+body.dark-mode #expense-list li .btn-delete:hover {
+  color: #a83227;
+}
+
 .container {
     width: 100%;
     max-width: 1200px; /* Allow wider container */
